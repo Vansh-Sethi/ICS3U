@@ -22,72 +22,109 @@ Author: Vansh Sethi
 
 public void setup() {
     
-    background(214, 214, 214);
+    background(255,255,255,1);
+        for (int c = 1; c <= 4; c++) {
+        int xFactor = 0;
+        int yFactor = 0;
+        switch (c) {
+            case 1:
+                xFactor = 0;
+                yFactor = 0;
+            case 2:
+                xFactor = 300;
+                yFactor = 0;
+            case 3:
+                xFactor = 0;
+                yFactor = 300;
+            case 4:
+                xFactor = 300;
+                yFactor = 300;
+        }
+        for (int i = 1; i <= (300/20); i++) {
+                int x1 = i*20;
+                int y1 = 0;
+                int x2 = 0;
+                int y2 = 300 - (i*20);
+                stroke(153);
+                line(x1 + xFactor, y1 + yFactor, x2+ xFactor , y2 + yFactor);
 
+                x1 = 300 - i*20;
+                y1 = 0;
+                x2 = 300;
+                y2 = 300 - i*20;
+                stroke(153);
+                line(x1 + xFactor, y1 + yFactor, x2+ xFactor , y2 + yFactor);
+
+                x1 = i*20;
+                y1 = 300;
+                x2 = 0;
+                y2 = i*20;
+                stroke(153);
+                line(x1 + xFactor, y1 + yFactor, x2+ xFactor , y2 + yFactor);
+
+                x1 = 300 - i*20;
+                y1 = 300;
+                x2 = 300;
+                y2 = i*20;
+                stroke(0);
+                line(x1 + xFactor, y1 + yFactor, x2+ xFactor , y2 + yFactor);
+        }
+    }
 }
 
-public void draw() {
-    background(214, 214, 214);
+// void draw() {
+//     for (int c = 1; c <= 4; c++) {
+//         int xFactor = 0;
+//         int yFactor = 0;
+//         switch (c) {
+//             case 1:
+//                 xFactor = 0;
+//                 yFactor = 0;
+//             case 2:
+//                 xFactor = 300;
+//                 yFactor = 0;
+//             case 3:
+//                 xFactor = 0;
+//                 yFactor = 300;
+//             case 4:
+//                 xFactor = 300;
+//                 yFactor = 300;
+//         }
+//         for (int i = 1; i <= (300/20); i++) {
+//                 int x1 = i*20;
+//                 int y1 = 0;
+//                 int x2 = 0;
+//                 int y2 = 300 - (i*20);
+//                 stroke(153);
+//                 line(x1 + xFactor, y1 + yFactor, x2+ xFactor , y2 + yFactor);
 
-    // Small cirlce
-    if (dist(mouseX, mouseY, 300,300) <= 100) {
-        clear(); 
-        fill(255,255,255);
-        circle(300, 300, 600);
-        circle(300, 300, 400);
+//                 x1 = 300 - i*20;
+//                 y1 = 0;
+//                 x2 = 300;
+//                 y2 = 300 - i*20;
+//                 stroke(153);
+//                 line(x1 + xFactor, y1 + yFactor, x2+ xFactor , y2 + yFactor);
 
-        fill(242, 255, 3);
-        circle(300, 300, 200);
+//                 x1 = i*20;
+//                 y1 = 300;
+//                 x2 = 0;
+//                 y2 = i*20;
+//                 stroke(153);
+//                 line(x1 + xFactor, y1 + yFactor, x2+ xFactor , y2 + yFactor);
 
-        fill(255,255,255);
-        line(mouseX, mouseY, mouseX, mouseY+10);
-        line(mouseX, mouseY, mouseX, mouseY-10);
-        line(mouseX, mouseY, mouseX+10, mouseY);
-        line(mouseX, mouseY, mouseX-10, mouseY);
-    }
+//                 x1 = 300 - i*20;
+//                 y1 = 300;
+//                 x2 = 300;
+//                 y2 = i*20;
+//                 stroke(0);
+//                 line(x1 + xFactor, y1 + yFactor, x2+ xFactor , y2 + yFactor);
+//         }
+//     }
+  
 
-    // Medium Circle
-    else if (dist(mouseX, mouseY, 300,300) <= 200) {
-        clear();
-        fill(255,255,255);
-        circle(300, 300, 600);
+ 
 
-        fill(34, 255, 5);
-        circle(300, 300, 400);
-
-        fill(255,255,255);
-        circle(300, 300, 200);
-
-        fill(255,255,255);
-        rect(mouseX, mouseY, 20, 20);
-    }
-
-    // Large Circle
-    else if (dist(mouseX, mouseY, 300,300) <= 300) {
-        clear();
-        fill(255,0,0);
-        circle(300, 300, 600);
-
-        fill(255,255,255);
-        circle(300, 300, 400);
-
-        fill(255,255,255);
-        circle(300, 300, 200);
-
-        fill(255,255,255);
-        circle(mouseX, mouseY, 20);
-    }
-
-    // last case
-    else {
-        clear();
-        fill(255,255,255);
-        circle(300, 300, 600);
-        circle(300, 300, 400);
-        circle(300, 300, 200);
-    }
-
-}
+// }
   public void settings() {  size(600, 600); }
   static public void main(String[] passedArgs) {
     String[] appletArgs = new String[] { "ICS3U" };
