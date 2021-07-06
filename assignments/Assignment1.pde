@@ -1,32 +1,14 @@
-import processing.core.*; 
-import processing.data.*; 
-import processing.event.*; 
-import processing.opengl.*; 
-
-import java.util.HashMap; 
-import java.util.ArrayList; 
-import java.io.File; 
-import java.io.BufferedReader; 
-import java.io.PrintWriter; 
-import java.io.InputStream; 
-import java.io.OutputStream; 
-import java.io.IOException; 
-
-public class ICS3U extends PApplet {
-
 /* 
 ICS3U - Assigment #1
 Title: Coincentric Circles
 Author: Vansh Sethi
 */
 
-public void setup() {
-    
-    background(214, 214, 214);
-
+void setup() {
+    size(600, 600);
 }
 
-public void draw() {
+void draw() {
     background(214, 214, 214);
 
     // Small cirlce
@@ -87,14 +69,4 @@ public void draw() {
         circle(300, 300, 200);
     }
 
-}
-  public void settings() {  size(600, 600); }
-  static public void main(String[] passedArgs) {
-    String[] appletArgs = new String[] { "ICS3U" };
-    if (passedArgs != null) {
-      PApplet.main(concat(appletArgs, passedArgs));
-    } else {
-      PApplet.main(appletArgs);
-    }
-  }
 }

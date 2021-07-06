@@ -1,31 +1,74 @@
 /* 
-ICS3U - Formative Getting Started Exercises
-Title: Among Us Drawing
+ICS3U - Assigment #1
+Title: Coincentric Circles
 Author: Vansh Sethi
 */
 
 void setup() {
-    size(477, 640);
+    size(600, 600);
+    background(214, 214, 214);
+
 }
 
 void draw() {
-    strokeWeight(5);
-    fill(255,0,0);
-    rect(85,5,325,500, 200,200,0,0);
-    
-    strokeWeight(5);
-    fill(255,0,0);
-    rect(85,505,130,100, 0,0,200,200);
+    background(214, 214, 214);
 
-    strokeWeight(5);
-    fill(255,0,0);
-    rect(282,505,130,100, 0,0,200,200);
+    // Small cirlce
+    if (dist(mouseX, mouseY, 300,300) <= 100) {
+        clear(); 
+        fill(255,255,255);
+        circle(300, 300, 600);
+        circle(300, 300, 400);
 
-    strokeWeight(5);
-    fill(255,0,0);
-    rect(3,200,78,300, 200,0,0,200);
+        fill(242, 255, 3);
+        circle(300, 300, 200);
 
-    strokeWeight(5);
-    fill(120, 255, 237);
-    rect(175,75,300,180, 500,500,500,500);
+        fill(255,255,255);
+        line(mouseX, mouseY, mouseX, mouseY+10);
+        line(mouseX, mouseY, mouseX, mouseY-10);
+        line(mouseX, mouseY, mouseX+10, mouseY);
+        line(mouseX, mouseY, mouseX-10, mouseY);
+    }
+
+    // Medium Circle
+    else if (dist(mouseX, mouseY, 300,300) <= 200) {
+        clear();
+        fill(255,255,255);
+        circle(300, 300, 600);
+
+        fill(34, 255, 5);
+        circle(300, 300, 400);
+
+        fill(255,255,255);
+        circle(300, 300, 200);
+
+        fill(255,255,255);
+        rect(mouseX, mouseY, 20, 20);
+    }
+
+    // Large Circle
+    else if (dist(mouseX, mouseY, 300,300) <= 300) {
+        clear();
+        fill(255,0,0);
+        circle(300, 300, 600);
+
+        fill(255,255,255);
+        circle(300, 300, 400);
+
+        fill(255,255,255);
+        circle(300, 300, 200);
+
+        fill(255,255,255);
+        circle(mouseX, mouseY, 20);
+    }
+
+    // last case
+    else {
+        clear();
+        fill(255,255,255);
+        circle(300, 300, 600);
+        circle(300, 300, 400);
+        circle(300, 300, 200);
+    }
+
 }
