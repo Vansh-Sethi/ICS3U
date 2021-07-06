@@ -15,117 +15,47 @@ import java.io.IOException;
 public class ICS3U extends PApplet {
 
 /* 
-ICS3U - Assigment #1
-Title: Coincentric Circles
+ICS3U - Assigment #2
+Title: Quadratic Lines
 Author: Vansh Sethi
 */
 
+float circleX; // x-coordinate of the circle
+float circleY; // y-coordinate of the circle
+float size; // diameter of the circle
+
 public void setup() {
-    
-    background(255,255,255,1);
-        for (int c = 1; c <= 4; c++) {
-        int xFactor = 0;
-        int yFactor = 0;
-        switch (c) {
-            case 1:
-                xFactor = 0;
-                yFactor = 0;
-            case 2:
-                xFactor = 300;
-                yFactor = 0;
-            case 3:
-                xFactor = 0;
-                yFactor = 300;
-            case 4:
-                xFactor = 300;
-                yFactor = 300;
-        }
-        for (int i = 1; i <= (300/20); i++) {
-                int x1 = i*20;
-                int y1 = 0;
-                int x2 = 0;
-                int y2 = 300 - (i*20);
-                stroke(153);
-                line(x1 + xFactor, y1 + yFactor, x2+ xFactor , y2 + yFactor);
-
-                x1 = 300 - i*20;
-                y1 = 0;
-                x2 = 300;
-                y2 = 300 - i*20;
-                stroke(153);
-                line(x1 + xFactor, y1 + yFactor, x2+ xFactor , y2 + yFactor);
-
-                x1 = i*20;
-                y1 = 300;
-                x2 = 0;
-                y2 = i*20;
-                stroke(153);
-                line(x1 + xFactor, y1 + yFactor, x2+ xFactor , y2 + yFactor);
-
-                x1 = 300 - i*20;
-                y1 = 300;
-                x2 = 300;
-                y2 = i*20;
-                stroke(0);
-                line(x1 + xFactor, y1 + yFactor, x2+ xFactor , y2 + yFactor);
-        }
-    }
+   //size of the run window, global variables width and height have value of 600
+  stroke(11,31,227); //blue colour for the outline of the shapes
 }
 
-// void draw() {
-//     for (int c = 1; c <= 4; c++) {
-//         int xFactor = 0;
-//         int yFactor = 0;
-//         switch (c) {
-//             case 1:
-//                 xFactor = 0;
-//                 yFactor = 0;
-//             case 2:
-//                 xFactor = 300;
-//                 yFactor = 0;
-//             case 3:
-//                 xFactor = 0;
-//                 yFactor = 300;
-//             case 4:
-//                 xFactor = 300;
-//                 yFactor = 300;
-//         }
-//         for (int i = 1; i <= (300/20); i++) {
-//                 int x1 = i*20;
-//                 int y1 = 0;
-//                 int x2 = 0;
-//                 int y2 = 300 - (i*20);
-//                 stroke(153);
-//                 line(x1 + xFactor, y1 + yFactor, x2+ xFactor , y2 + yFactor);
-
-//                 x1 = 300 - i*20;
-//                 y1 = 0;
-//                 x2 = 300;
-//                 y2 = 300 - i*20;
-//                 stroke(153);
-//                 line(x1 + xFactor, y1 + yFactor, x2+ xFactor , y2 + yFactor);
-
-//                 x1 = i*20;
-//                 y1 = 300;
-//                 x2 = 0;
-//                 y2 = i*20;
-//                 stroke(153);
-//                 line(x1 + xFactor, y1 + yFactor, x2+ xFactor , y2 + yFactor);
-
-//                 x1 = 300 - i*20;
-//                 y1 = 300;
-//                 x2 = 300;
-//                 y2 = i*20;
-//                 stroke(0);
-//                 line(x1 + xFactor, y1 + yFactor, x2+ xFactor , y2 + yFactor);
-//         }
-//     }
+// remember all the code in here gets run over and over again
+public void draw() {
   
+  //create a random float value for the x-coordinate of the circle from 0 to the width of the
+  //run window
 
- 
-
-// }
-  public void settings() {  size(600, 600); }
+  circleX = random(width);  
+  
+  //create a random float value for the y-coordinate of the circle from 0 to the height of the
+  //run window
+  circleY = random(height);  
+  
+  //create a random float value for the diameter of the circle from 0 to 20;
+  size = random(20);  
+  
+  //create a VERTICAL line that splits the run window into half
+  line(width/2,0,width/2,height); 
+  
+  // create the HORIZONTAL line that splits the run window into half
+  line(0,height/2,width,height/2); 
+  
+  //draw the circle
+  if (circleX <= 300 && circleY <=300) {
+    ellipse(circleX,circleY,size,size);
+  }
+}
+  public void settings() {  size(600,600); }
   static public void main(String[] passedArgs) {
     String[] appletArgs = new String[] { "ICS3U" };
     if (passedArgs != null) {
