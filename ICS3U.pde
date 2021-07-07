@@ -1,41 +1,94 @@
 /* 
-ICS3U - Formative Conditional Exercise
-Title: Circles in a Box
+ICS3U - Assigment #1
+Title: Coincentric Circles
 Author: Vansh Sethi
 */
 
-float circleX; // x-coordinate of the circle
-float circleY; // y-coordinate of the circle
-float size; // diameter of the circle
+/*
+The major idea being implemented: Check if the distance to the center of the circle is smaller than the radius, meaning
+that it is inside the circle. We do this 3 times for all the radii.
+
+The alternative 'solution' is treating the circle as a rectangle, however this would discount many cases.
+*/
 
 void setup() {
-  size(600,600); //size of the run window, global variables width and height have value of 600
-  stroke(11,31,227); //blue colour for the outline of the shapes
+    // Define canvas size
+    size(600, 600);
 }
 
-// remember all the code in here gets run over and over again
 void draw() {
-  
-  //create a random float value for the x-coordinate of the circle from 0 to the width of the
-  //run window
+    // Define background color
+    background(214, 214, 214);
 
-  circleX = random(width);  
-  
-  //create a random float value for the y-coordinate of the circle from 0 to the height of the
-  //run window
-  circleY = random(height);  
-  
-  //create a random float value for the diameter of the circle from 0 to 20;
-  size = random(20);  
-  
-  //create a VERTICAL line that splits the run window into half
-  line(width/2,0,width/2,height); 
-  
-  // create the HORIZONTAL line that splits the run window into half
-  line(0,height/2,width,height/2); 
-  
-  //draw the circle
-  if (circleX <= 300 && circleY <=300) {
-    ellipse(circleX,circleY,size,size);
-  }
+    // Small cirlce (check if radius is below 100)
+    if (dist(mouseX, mouseY, 300,300) <= 100) {
+        clear(); 
+        background(214, 214, 214);
+
+        fill(255,255,255);
+        circle(300, 300, 600);
+        circle(300, 300, 400);
+
+        // Change the color of the small circle 
+        fill(242, 255, 3);
+        circle(300, 300, 200);
+
+        // Define cross and make it follow the mouse
+        line(mouseX, mouseY, mouseX, mouseY+10);
+        line(mouseX, mouseY, mouseX, mouseY-10);
+        line(mouseX, mouseY, mouseX+10, mouseY);
+        line(mouseX, mouseY, mouseX-10, mouseY);
+    }
+
+    // Medium Circle (check if radius is below 200)
+    else if (dist(mouseX, mouseY, 300,300) <= 200) {
+        clear();
+        background(214, 214, 214);
+
+        fill(255,255,255);
+        circle(300, 300, 600);
+
+        // Change the color of the medium circle 
+        fill(34, 255, 5);
+        circle(300, 300, 400);
+
+        fill(255,255,255);
+        circle(300, 300, 200);
+
+        // Define rectangle and make it follow the mouse
+        fill(255,255,255);
+        rect(mouseX, mouseY, 20, 20);
+    }
+
+    // Large Circle (check if radius is below 300)
+    else if (dist(mouseX, mouseY, 300,300) <= 300) {
+        clear();
+        background(214, 214, 214);
+
+        // Change the color of the large circle 
+        fill(255,0,0);
+        circle(300, 300, 600);
+
+        fill(255,255,255);
+        circle(300, 300, 400);
+
+        fill(255,255,255);
+        circle(300, 300, 200);
+
+        // Define circle and make it follow the mouse
+        fill(255,255,255);
+        circle(mouseX, mouseY, 20);
+    }
+
+    // Last Case (Cursor not in any of the circles)
+    else {
+        clear();
+        background(214, 214, 214);
+      
+        fill(255,255,255);
+        circle(300, 300, 600);
+        circle(300, 300, 400);
+        circle(300, 300, 200);
+    }
+
 }
