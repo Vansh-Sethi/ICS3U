@@ -1,6 +1,6 @@
 /* 
-ICS3U - Formative Iterators
-Title: Dots on a Grid
+ICS3U - Assignment 4
+Title: Clicking and Revealing
 Author: Vansh Sethi
 */
 
