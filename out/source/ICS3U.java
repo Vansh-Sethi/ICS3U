@@ -3,8 +3,6 @@ import processing.data.*;
 import processing.event.*; 
 import processing.opengl.*; 
 
-import java.util.Arrays; 
-
 import java.util.HashMap; 
 import java.util.ArrayList; 
 import java.io.File; 
@@ -17,41 +15,72 @@ import java.io.IOException;
 public class ICS3U extends PApplet {
 
 /* 
-ICS3U - Car Events
-Title: Car
+ICS3U - Assignment 3
+Title: Circle... Faster and Faster
 Author: Vansh Sethi
 */
 
-int[][] array2d = new int[4][4];
+int rad = 60;        // Width of the shape
+float xpos, ypos;    // Starting position of shape    
 
-public void setup() {
+float xspeed = 2.8f;  // Speed of the shape
+float yspeed = 2.2f;  // Speed of the shape
+
+int xdirection = 1;  // Left or Right
+int ydirection = 1;  // Top to Bottom
+
+
+public void setup() 
+{
   
-  background(255, 255, 255);
+  noStroke();
+  frameRate(30);
+  ellipseMode(RADIUS);
+  // Set the starting position of the shape
+  xpos = width/2;
+  ypos = height/2;
+}
 
-  for (int row = 0; row < array2d.length; row++) {
-    for (int col = 0; col < array2d[0].length; col++) {
-      array2d[row][col] = 5;
-    }
+public void draw() 
+{
+  background(102);
+  
+  // Update the position of the shape
+  xpos = xpos + ( xspeed * xdirection );
+  ypos = ypos + ( yspeed * ydirection );
+  
+  // Test to see if the shape exceeds the boundaries of the screen
+  // If it does, reverse its direction by multiplying by -1
+  if (xpos > width-rad || xpos < rad) {
+    xdirection *= -1;
   }
-  print2DArray(array2d);
+  if (ypos > height-rad || ypos < rad) {
+    ydirection *= -1;
+  }
+
+  // Draw the shape
+
+  if (dist(xpos, ypos, mouseX, mouseY) <= rad + 20) {
+      fill(255,255,255);
+      ellipse(mouseX, mouseY, 20, 20);
+
+      fill(0, 104, 255);
+      xspeed += 1.25f;
+      yspeed += 1.25f;
+      rad -= 1;
+      ellipse(xpos, ypos, rad, rad);
+
+  }
+  else {
+      fill(255,255,255);
+      ellipse(mouseX, mouseY, 20, 20);
+
+      fill(255,255,255);
+      ellipse(xpos, ypos, rad, rad);
+  }
+
 }
-
-public void draw() {
-
-
-}
-
-
-
-public void print2DArray(Object[] a) {
-  println(Arrays.deepToString(a)
-  .replace("[[", "")
-  .replace("], [", "\n")
-  .replace("]]", "")
-  .replace(" ", " "));
-}
-
-  public void settings() {  size(500, 500); }
+  public void settings() {  size(640, 360); }
   static public void main(String[] passedArgs) {
     String[] appletArgs = new String[] { "ICS3U" };
     if (passedArgs != null) {

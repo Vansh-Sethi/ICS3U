@@ -1,38 +1,82 @@
 /* 
-ICS3U - Declaration and Initialization of a 2D Array 
-Title: Accessing Array
+ICS3U - Assignment 3
+Title: Circle... Faster and Faster
 Author: Vansh Sethi
 */
 
-int[][] array2d = new int[4][5];
+/*
+The major idea being implemented: To see if the two circles have collided, we simply take the distance of the user's 
+cursor to the center of the moving circle, and if that is smaller than or equal to the radius of the moving circle + the user's circle,
+it means that the two circles have touched or colided. Then, we chagne global properties if this colision is met.
 
-void setup() {
-  size(500, 500);
-  background(255, 255, 255);
+The alternative 'solution' is treating the circle as a rectangle, however this would discount many cases.
+*/
 
-  for (int row = 0; row < array2d.length; row++) {
-    for (int col = 0; col < array2d[0].length; col++) {
-      array2d[row][col] = -1;
-    }
+
+// Global Variables Initalized (for the moving circle)
+int rad = 60;        // Width of the shape
+float xpos, ypos;    // Starting position of shape    
+
+float xspeed = 2.8;  // Speed of the shape
+float yspeed = 2.2;  // Speed of the shape
+
+int xdirection = 1;  // Left or Right
+int ydirection = 1;  // Top to Bottom
+
+
+void setup() 
+{
+  // Set the screen size
+  size(640, 360);
+  noStroke(); // No stroke to circle
+  frameRate(30); // Frame rate of processing program
+  ellipseMode(RADIUS);
+  // Set the starting position of the shape
+  xpos = width/2; 
+  ypos = height/2;
+}
+
+void draw() 
+{
+  // Recolor the background 
+  background(102);
+  
+  // Update the position of the shape
+  xpos = xpos + ( xspeed * xdirection );
+  ypos = ypos + ( yspeed * ydirection );
+  
+  // Test to see if the shape exceeds the boundaries of the screen
+  // If it does, reverse its direction by multiplying by -1
+  if (xpos > width-rad || xpos < rad) {
+    xdirection *= -1;
   }
-  array2d[3][4] = 0;
-  array2d[0][2] = 0;
-  array2d[2][2] = 2;
-  print2DArray(array2d);
+  if (ypos > height-rad || ypos < rad) {
+    ydirection *= -1;
+  }
+
+  // Testing to see if the two circles collided (by seeing if the radius from the center of circle exceeds the radius of the two circles added together)
+  if (dist(xpos, ypos, mouseX, mouseY) <= rad + 20) {
+    // Rendering the circle of the user
+      fill(255,255,255);
+      ellipse(mouseX, mouseY, 20, 20);
+
+    // Rendering a blue circle (showing that it is collided) and changing global paramters
+      fill(0, 104, 255); // Change to color blue
+      xspeed += 1.25; // Increase speed horizontally
+      yspeed += 1.25; // Increase speed vertically
+      rad -= 1; // Reduce the radius
+      ellipse(xpos, ypos, rad, rad);  // Render the circle
+
+  }
+  // If the circles have not colided, simply render both
+  else {
+    // Rendering the circle of the user
+      fill(255,255,255);
+      ellipse(mouseX, mouseY, 20, 20);
+
+    // Rendering the moving circle 
+      fill(255,255,255);
+      ellipse(xpos, ypos, rad, rad);
+  }
+
 }
-
-void draw() {
-
-
-}
-
-import java.util.Arrays;
-
-void print2DArray(Object[] a) {
-  println(Arrays.deepToString(a)
-  .replace("[[", "")
-  .replace("], [", "\n")
-  .replace("]]", "")
-  .replace(" ", " "));
-}
-
