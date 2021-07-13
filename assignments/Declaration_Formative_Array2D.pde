@@ -1,5 +1,5 @@
 /* 
-ICS3U - Declaration and Initialization of a 2D Array 
+ICS3U - Declaration and Initialization of a 2D Array Formative 
 Title: Accessing Array
 Author: Vansh Sethi
 */

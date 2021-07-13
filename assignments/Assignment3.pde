@@ -1,6 +1,6 @@
 /* 
-ICS3U - Formative Iterators
-Title: Dots on a Grid
+ICS3U - Assignment 3
+Title: Circle... Faster and Faster
 Author: Vansh Sethi
 */
 
