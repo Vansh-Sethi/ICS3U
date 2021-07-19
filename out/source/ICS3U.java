@@ -15,72 +15,60 @@ import java.io.IOException;
 public class ICS3U extends PApplet {
 
 /* 
-ICS3U - Assignment 3
-Title: Circle... Faster and Faster
+ICS3U - Formative Classes
+Title: SquareBox Classes
 Author: Vansh Sethi
 */
 
-int rad = 60;        // Width of the shape
-float xpos, ypos;    // Starting position of shape    
-
-float xspeed = 2.8f;  // Speed of the shape
-float yspeed = 2.2f;  // Speed of the shape
-
-int xdirection = 1;  // Left or Right
-int ydirection = 1;  // Top to Bottom
+// Create instances of SquareBoxs
+Squarebox Square1 = new Squarebox(200, 200, 50);
+Squarebox Square2 = new Squarebox(400, 400, 25);
+Squarebox Square3 = new Squarebox(50, 50, 100);
 
 
-public void setup() 
-{
-  
-  noStroke();
-  frameRate(30);
-  ellipseMode(RADIUS);
-  // Set the starting position of the shape
-  xpos = width/2;
-  ypos = height/2;
+public void setup() {
+  // Set up the screen
+ 
 }
 
-public void draw() 
-{
-  background(102);
-  
-  // Update the position of the shape
-  xpos = xpos + ( xspeed * xdirection );
-  ypos = ypos + ( yspeed * ydirection );
-  
-  // Test to see if the shape exceeds the boundaries of the screen
-  // If it does, reverse its direction by multiplying by -1
-  if (xpos > width-rad || xpos < rad) {
-    xdirection *= -1;
-  }
-  if (ypos > height-rad || ypos < rad) {
-    ydirection *= -1;
-  }
-
-  // Draw the shape
-
-  if (dist(xpos, ypos, mouseX, mouseY) <= rad + 20) {
-      fill(255,255,255);
-      ellipse(mouseX, mouseY, 20, 20);
-
-      fill(0, 104, 255);
-      xspeed += 1.25f;
-      yspeed += 1.25f;
-      rad -= 1;
-      ellipse(xpos, ypos, rad, rad);
-
-  }
-  else {
-      fill(255,255,255);
-      ellipse(mouseX, mouseY, 20, 20);
-
-      fill(255,255,255);
-      ellipse(xpos, ypos, rad, rad);
-  }
-
+// Draw and move the square boxes
+public void draw() {
+  clear();
+  Square1.display();
+  Square1.move(10);
+  Square2.display();
+  Square2.move(5);
+  Square3.display();
+  Square3.move(15);
 }
-  public void settings() {  size(640, 360); }
+
+// Create the object Squarebox
+class Squarebox {
+// Data 
+  int sideLength;
+  int x;
+  int y;
+
+// Constructor (initalize variables)
+  Squarebox (int tempX, int tempY, int tempSideLength) {
+    x = tempX;
+    y = tempY;
+    sideLength = tempSideLength;
+  }
+// Method that displays the square box
+  public void display() {
+    rect(x, y, sideLength, sideLength);
+  }
+
+// Method that moves the square box
+  public void move(int distance) { 
+    x += distance;
+    if (x - sideLength > 512) {
+      x = 0;
+    }
+  }
+}
+  public void settings() {  size(512, 512); }
   static public void main(String[] passedArgs) {
     String[] appletArgs = new String[] { "ICS3U" };
     if (passedArgs != null) {
