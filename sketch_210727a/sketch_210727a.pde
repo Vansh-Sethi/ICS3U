@@ -1,19 +1,3 @@
-import processing.core.*; 
-import processing.data.*; 
-import processing.event.*; 
-import processing.opengl.*; 
-
-import java.util.HashMap; 
-import java.util.ArrayList; 
-import java.io.File; 
-import java.io.BufferedReader; 
-import java.io.PrintWriter; 
-import java.io.InputStream; 
-import java.io.OutputStream; 
-import java.io.IOException; 
-
-public class ICS3U extends PApplet {
-
 /* 
 ICS3U - Final Assignment
 Title: Magic Mania
@@ -22,18 +6,13 @@ Author: Vansh Sethi
 
 // BREAK UP CODE AFTER!!
 PFont PixelFont;
-Mage[] selectionMages = new Mage[4];
+ Mage myMage = new Mage("Blue", 100, 100, "Left");
 
 
-public void setup() {
-  
+void setup() {
+  size(1400, 768);
   String[] fontList = PFont.list();
   PixelFont = createFont("MinecraftFont.ttf", 32);
-  selectionMages[0] = new Mage("Blue", 50, 300, "Left");
-  selectionMages[1] = new Mage("Red", 405, 300, "Left");
-  selectionMages[2] = new Mage("Green", 755, 300, "Left");
-  selectionMages[3] = new Mage("Yellow", 1105, 300, "Left");
-
 
 }
 
@@ -43,7 +22,7 @@ String name = "Type Name on Keyboard";
 int gameState = 0;
 
 // Draw and move the triangles
-public void draw() {
+void draw() {
   clear(); // Clear background such that old triangles are not visible
   background(256, 256, 256); // Re-set the background color
   if (gameState == 0) {
@@ -51,9 +30,8 @@ public void draw() {
   }
   if (gameState == 1) {
     DrawChooseScreen();
-    for (int i = 0; i < selectionMages.length; i++) {
-      selectionMages[i].display();
-    }
+    myMage.display();
+
 
   }
 
@@ -61,13 +39,13 @@ public void draw() {
 
 
 
-public void keyPressed() {
+void keyPressed() {
   if (gameState == 0) {
     name = HandleName(key, name);
   }
 }
 
-public void mousePressed() {
+void mousePressed() {
   if (gameState == 0) {
     if (mouseX > 540 && mouseX < 860 && mouseY > 640 && mouseY < 650 + 85) {
       gameState = 1;
@@ -77,7 +55,7 @@ public void mousePressed() {
   }
 }
 
-public void mouseMoved() {
+void mouseMoved() {
   if (gameState == 0) {
     if (mouseX > 540 && mouseX < 860 && mouseY > 640 && mouseY < 650 + 85) {
       cursor(HAND);
@@ -85,10 +63,7 @@ public void mouseMoved() {
     else{
       cursor(ARROW);
     }
-  }
 
-  if (gameState == 1) {
-    mageHover();
   }
 }
 
@@ -96,7 +71,7 @@ public void mouseMoved() {
 // =========== Game State 0 ===========
 
 // Game Screen Code (put in seperate file later)
-public void DrawStartScreen() {
+void DrawStartScreen() {
     fill(59, 17, 156);
     noStroke();
     rect(0, 0, 350, 768);
@@ -151,7 +126,7 @@ public void DrawStartScreen() {
     text("Play Game", 610, 700);
 }
 
-public String HandleName(char key, String name) {
+String HandleName(char key, String name) {
 
     if (name == "Type Name on Keyboard") {
       name = "";
@@ -167,7 +142,7 @@ public String HandleName(char key, String name) {
 }
 
 // =========== Game State 1 ===========
-public void DrawChooseScreen() {
+void DrawChooseScreen() {
     clear();
     fill(59, 17, 156);
     noStroke();
@@ -190,24 +165,6 @@ public void DrawChooseScreen() {
     textSize(110);
     text("Choose Your Mage", 215, 180);
 
-}
-
-public void mageHover() {
-    if (mouseX > 50 && mouseX < 238+50 && mouseY > 300 && mouseY < 300+264) {
-      cursor(HAND);
-    }
-    else if (mouseX > 405 && mouseX < 238+405 && mouseY > 300 && mouseY < 300+264) {
-      cursor(HAND);
-    }
-    else if (mouseX > 755 && mouseX < 238+755 && mouseY > 300 && mouseY < 300+264) {
-      cursor(HAND);
-    }
-    else if (mouseX > 1105 && mouseX < 238+1105 && mouseY > 300 && mouseY < 300+264) {
-      cursor(HAND);
-    }
-    else {
-      cursor(ARROW);
-    }
 }
 
 // Classes Characters
@@ -233,56 +190,28 @@ class Mage {
     this.bodyImage = 1; // Set the body image
     
     this.frame1 = loadImage("MageCharacter/" + tempColor + "Mage/" + "move1.png");
-    this.frame1.resize(238, 264);
     this.frame2 = loadImage("MageCharacter/" + tempColor + "Mage/" + "move2.png");
-    this.frame2.resize(238, 264);
     this.frame3 = loadImage("MageCharacter/" + tempColor + "Mage/" + "move3.png");
-    this.frame3.resize(245, 264);
     this.frame4 = loadImage("MageCharacter/" + tempColor + "Mage/" + "move4.png");
-    this.frame4.resize(245, 264);
-
   }
 
-  public void display() {
+  void display() {
+    print(this.frames);
     this.frames = this.frames + 1;
-    if (this.frames % 6 == 0) {
-      if (this.bodyImage == 1) {
-        this.bodyImage = 2;
-      }
-      else if (this.bodyImage == 2) {
-        this.bodyImage = 3;
-      }
-      else if (this.bodyImage == 3) {
-        this.bodyImage = 4;
-      }
-      else if (this.bodyImage == 4) {
-        this.bodyImage = 1;
-      }
-    }
-
-    if (this.bodyImage == 1) {
+    print(this.frames);
+    if (this.frames < 1) {
       image(frame1, x, y); // Display the image
     }
-    else if (this.bodyImage == 2) {
+    else if (this.frames < 10) {
       image(frame2, x, y); // Display the image
     }
-    else if (this.bodyImage == 3) {
+    else if (this.frames > 20) {
       image(frame3, x, y); // Display the image
     }
-    else if (this.bodyImage == 4) {
+    else if (this.frames > 30) {
       image(frame4, x, y); // Display the image
     }
 
   }
 
-}
-  public void settings() {  size(1400, 768); }
-  static public void main(String[] passedArgs) {
-    String[] appletArgs = new String[] { "ICS3U" };
-    if (passedArgs != null) {
-      PApplet.main(concat(appletArgs, passedArgs));
-    } else {
-      PApplet.main(appletArgs);
-    }
-  }
 }
