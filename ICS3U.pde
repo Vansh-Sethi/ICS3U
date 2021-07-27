@@ -7,17 +7,20 @@ Author: Vansh Sethi
 // BREAK UP CODE AFTER!!
 PFont PixelFont;
 Mage[] selectionMages = new Mage[4];
+Mage userMage;
+PImage gameBackground;
 
 
 void setup() {
   size(1400, 768);
   String[] fontList = PFont.list();
   PixelFont = createFont("MinecraftFont.ttf", 32);
-  selectionMages[0] = new Mage("Blue", 50, 300, "Left");
-  selectionMages[1] = new Mage("Red", 405, 300, "Left");
-  selectionMages[2] = new Mage("Green", 755, 300, "Left");
-  selectionMages[3] = new Mage("Yellow", 1105, 300, "Left");
-
+  selectionMages[0] = new Mage("Blue", 50, 300, "Right", "Large");
+  selectionMages[1] = new Mage("Red", 405, 300, "Right", "Large");
+  selectionMages[2] = new Mage("Green", 755, 300, "Right", "Large");
+  selectionMages[3] = new Mage("Yellow", 1105, 300, "Right", "Large");
+  gameBackground = loadImage("background.png");
+  gameBackground.resize(1400, 768);
 
 }
 
@@ -35,19 +38,18 @@ void draw() {
   }
   if (gameState == 1) {
     DrawChooseScreen();
-    for (int i = 0; i < selectionMages.length; i++) {
-      selectionMages[i].display();
-    }
-
   }
-
+  if (gameState == 2) {
+    DrawGameScreen();
+  }
 }
-
-
 
 void keyPressed() {
   if (gameState == 0) {
     name = HandleName(key, name);
+  }
+  if (gameState == 2) {
+    userMage.move(key);
   }
 }
 
@@ -57,7 +59,9 @@ void mousePressed() {
       gameState = 1;
       cursor(ARROW);
     }
-
+  }
+  if (gameState == 1) { 
+    mageSelect();
   }
 }
 
@@ -174,6 +178,10 @@ void DrawChooseScreen() {
     textSize(110);
     text("Choose Your Mage", 215, 180);
 
+    for (int i = 0; i < selectionMages.length; i++) {
+      selectionMages[i].display();
+    }
+
 }
 
 void mageHover() {
@@ -194,6 +202,40 @@ void mageHover() {
     }
 }
 
+void mageSelect() {
+    if (mouseX > 50 && mouseX < 238+50 && mouseY > 300 && mouseY < 300+264) {
+      userMage = new Mage("Blue", 700, 350, "Right", "Small");
+      gameState = 2;
+      cursor(ARROW);
+    }
+    else if (mouseX > 405 && mouseX < 238+405 && mouseY > 300 && mouseY < 300+264) {
+      userMage = new Mage("Red", 700, 350, "Right", "Small");
+      gameState = 2;
+      cursor(ARROW);
+    }
+    else if (mouseX > 755 && mouseX < 238+755 && mouseY > 300 && mouseY < 300+264) {
+      userMage = new Mage("Green", 700, 350, "Right", "Small");
+      gameState = 2;
+      cursor(ARROW);
+    }
+    else if (mouseX > 1105 && mouseX < 238+1105 && mouseY > 300 && mouseY < 300+264) {
+      userMage = new Mage("Yellow", 700, 350, "Right", "Small");
+      gameState = 2;
+      cursor(ARROW);
+    }
+    else {
+      int nothing;
+    }
+}
+
+// =========== Game State 2 ===========
+void DrawGameScreen() {
+    clear();
+    image(gameBackground, 0,0);
+    userMage.display();
+
+}
+
 // Classes Characters
 class Mage {
 // Data 
@@ -203,27 +245,59 @@ class Mage {
   String direction;
   int bodyImage;
   int frames = 1;
+  boolean staff = false;
 
   PImage frame1;
   PImage frame2;
   PImage frame3;
   PImage frame4;
+  PImage staff1;
+  PImage staff2;
+  PImage staff3;
+
 
 // Constructor (initalize variables)
-  Mage (String tempColor, int tempX, int tempY,  String tempDirection) {
+  Mage (String tempColor, int tempX, int tempY,  String tempDirection, String size) {
     this.mageColor = tempColor; // Set the color 
     this.x = tempX; // Set the x position
     this.y = tempY; // Set the y position
     this.bodyImage = 1; // Set the body image
+    direction = tempDirection; // Set the direction
     
-    this.frame1 = loadImage("MageCharacter/" + tempColor + "Mage/" + "move1.png");
-    this.frame1.resize(238, 264);
-    this.frame2 = loadImage("MageCharacter/" + tempColor + "Mage/" + "move2.png");
-    this.frame2.resize(238, 264);
-    this.frame3 = loadImage("MageCharacter/" + tempColor + "Mage/" + "move3.png");
-    this.frame3.resize(245, 264);
-    this.frame4 = loadImage("MageCharacter/" + tempColor + "Mage/" + "move4.png");
-    this.frame4.resize(245, 264);
+    
+    if (size == "Small") {
+      this.frame1 = loadImage("MageCharacter/" + tempColor + "Mage/" + "move1.png");
+      this.frame1.resize(90, 100);
+      this.frame2 = loadImage("MageCharacter/" + tempColor + "Mage/" + "move2.png");
+      this.frame2.resize(90, 100);
+      this.frame3 = loadImage("MageCharacter/" + tempColor + "Mage/" + "move3.png");
+      this.frame3.resize(93, 100);
+      this.frame4 = loadImage("MageCharacter/" + tempColor + "Mage/" + "move4.png");
+      this.frame4.resize(93, 100);
+
+      this.staff1 = loadImage("MageCharacter/Staff/staff1.png");
+      this.staff1.resize(27, 73);
+      this.staff2 = loadImage("MageCharacter/Staff/staff2.png");
+      this.staff2.resize(27, 73);
+
+      this.staff3 = loadImage("MageCharacter/Staff/staff3.png");
+      this.staff3.resize(27, 73);
+
+      staff = true;
+    }
+
+    if (size == "Large") {
+      this.frame1 = loadImage("MageCharacter/" + tempColor + "Mage/" + "move1.png");
+      this.frame1.resize(238, 264);
+      this.frame2 = loadImage("MageCharacter/" + tempColor + "Mage/" + "move2.png");
+      this.frame2.resize(238, 264);
+      this.frame3 = loadImage("MageCharacter/" + tempColor + "Mage/" + "move3.png");
+      this.frame3.resize(245, 264);
+      this.frame4 = loadImage("MageCharacter/" + tempColor + "Mage/" + "move4.png");
+      this.frame4.resize(245, 264);
+    }
+
+
 
   }
 
@@ -245,18 +319,85 @@ class Mage {
     }
 
     if (this.bodyImage == 1) {
-      image(frame1, x, y); // Display the image
+      if (direction == "Right") {
+        image(frame1, x, y);
+      }
+      else {
+        pushMatrix();
+        translate(x + frame1.width, y);
+        scale(-1,1); 
+        image(frame1,0,0);
+        popMatrix();
+      }
     }
     else if (this.bodyImage == 2) {
-      image(frame2, x, y); // Display the image
+      if (direction == "Right") {
+        image(frame2, x, y);
+      }
+      else {
+        pushMatrix();
+        translate(x + frame2.width, y);
+        scale(-1,1); 
+        image(frame2,0,0);
+        popMatrix();
+      }
     }
     else if (this.bodyImage == 3) {
-      image(frame3, x, y); // Display the image
+      if (direction == "Right") {
+        image(frame3, x, y);
+      }
+      else {
+        pushMatrix();
+        translate(x + frame3.width, y);
+        scale(-1,1); 
+        image(frame3,0,0);
+        popMatrix();
+      }
     }
     else if (this.bodyImage == 4) {
-      image(frame4, x, y); // Display the image
+      if (direction == "Right") {
+        image(frame4, x, y);
+      }
+      else {
+        pushMatrix();
+        translate(x + frame4.width, y);
+        scale(-1,1); 
+        image(frame4,0,0);
+        popMatrix();
+      }    
     }
 
+    if (staff) {
+      pushMatrix();
+      translate(mouseX, mouseY);
+      // rotate(HALF_PI);
+      image(staff1, width/2, height/2);
+      popMatrix();
+    }
+
+
+
+  }
+
+  void move(char key) {
+    if (key == 'w') { 
+      y-= 5;
+    }
+    if (key == 'a') { 
+      if (direction == "Right") {
+        direction = "Left";
+      }
+      x-= 5;
+    }
+    if (key == 's') { 
+      y+= 5;
+    }
+    if (key == 'd') { 
+      if (direction == "Left") {
+        direction = "Right";
+      }
+      x+= 5;
+    }
   }
 
 }
