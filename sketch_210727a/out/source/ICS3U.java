@@ -25,16 +25,10 @@ PFont PixelFont;
 Mage[] selectionMages = new Mage[4];
 
 ArrayList<Attack> attacks =  new ArrayList<Attack>();
-ArrayList<Skeleton> skeletons =  new ArrayList<Skeleton>();
-
 
 Mage userMage;
 PImage gameBackground;
-PImage emptyHeart;
-PImage fullHeart;
 
-
-int score = 0;
 
 public void setup() {
   
@@ -46,15 +40,6 @@ public void setup() {
   selectionMages[3] = new Mage("Yellow", 1105, 300, "Right", "Large");
   gameBackground = loadImage("background.png");
   gameBackground.resize(1400, 768);
-  emptyHeart = loadImage("MageCharacter/emptyHeart.png");
-  emptyHeart.resize(64, 55);
-
-  fullHeart = loadImage("MageCharacter/fullHeart.png");
-  fullHeart.resize(64, 55);
-  skeletons.add(new Skeleton(500, 300, "Right"));
-
-
-
 
 }
 
@@ -270,37 +255,17 @@ public void mageSelect() {
 public void DrawGameScreen() {
     clear();
     image(gameBackground, 0,0);
-
+    userMage.display();
 
     for (int i = attacks.size() - 1; i >= 0; i--) {
       Attack circle = attacks.get(i);
       circle.display();
-
     }
-
-    for (int i = skeletons.size() - 1; i >= 0; i--) {
-      Skeleton enemy = skeletons.get(i);
-      enemy.display();
-    }
-
-    fill(255, 255, 255);
-    textFont(PixelFont);
-    textSize(30);
-    text("Wizard: " + name, 25, 50);
-
-    text("Score: " + score, 25, 740);
-
-    image(fullHeart, 1300 ,25);
-    image(fullHeart, 1225 ,25);
-    image(fullHeart, 1150,25);
-
-    userMage.display();
 
 }
 
 public void mageAttack() {
-  attacks.add(new Attack(userMage.x + userMage.frame1.width/2, userMage.y + userMage.frame1.height/2, 1));
-  userMage.staffAttack = true;
+  attacks.add(new Attack(userMage.x, userMage.y, 1));
 }
 
 // Classes Characters
@@ -310,20 +275,17 @@ class Mage {
   int x;
   int y;
   String direction;
-  int staffImage = 0;
-  PImage[] staffs = new PImage[3];
   int bodyImage;
   int frames = 1;
   boolean staff = false;
-
-  boolean staffAttack = false;
-  
 
   PImage frame1;
   PImage frame2;
   PImage frame3;
   PImage frame4;
-
+  PImage staff1;
+  PImage staff2;
+  PImage staff3;
 
 
 // Constructor (initalize variables)
@@ -345,13 +307,13 @@ class Mage {
       this.frame4 = loadImage("MageCharacter/" + tempColor + "Mage/" + "move4.png");
       this.frame4.resize(93, 100);
 
-      this.staffs[0] = loadImage("MageCharacter/Staff/staff1.png");
-      this.staffs[0].resize(27, 73);
-      this.staffs[1] = loadImage("MageCharacter/Staff/staff2.png");
-      this.staffs[1].resize(27, 73);
+      this.staff1 = loadImage("MageCharacter/Staff/staff1.png");
+      this.staff1.resize(27, 73);
+      this.staff2 = loadImage("MageCharacter/Staff/staff2.png");
+      this.staff2.resize(27, 73);
 
-      this.staffs[2] = loadImage("MageCharacter/Staff/staff3.png");
-      this.staffs[2].resize(27, 73);
+      this.staff3 = loadImage("MageCharacter/Staff/staff3.png");
+      this.staff3.resize(27, 73);
 
       staff = true;
     }
@@ -439,64 +401,49 @@ class Mage {
 
     if (staff) {
       noCursor();
+
       pushMatrix();
       translate(mouseX, mouseY);
+  
       // Rotate staff image by the angle from the mouse to the center of the user's mage in radians
+
       // Get the angle from the mouse to center of the user's mage  of the screen
-      float angle = atan2(mouseY - (userMage.y + userMage.frame1.height), mouseX - (userMage.x + userMage.frame1.width));
-      rotate(angle + PI/2);
-      image(staffs[staffImage], 0, 0);
-      popMatrix();
-      if (staffAttack == true && frames % 6 == 0 && staffImage <= 2) {
-        staffImage += 1;
-      }
-      if (staffImage > 2) {
-        staffImage = 0;
-        staffAttack = false;
-      }
+
+
+      float angle = atan2(mouseY - (userMage.y), mouseX - (userMage.x));
+
+      // Rotate staff image by the angle from the mouse to the center of the user's mage in radians
+
       
+
+
+      rotate(angle + PI/2);
+      image(staff1, 0, 0);
+      popMatrix();
     }
-
-
 
 
 
   }
 
   public void move(char key) {
-
     if (key == 'w') { 
-      if (!(x >= 135 && y <= 340) && !(x <= 135 && y <= 365) && !(x >= 1165 && y <= 365))  {
-        y-= 7;
-      }
-   
+      y-= 5;
     }
     if (key == 'a') { 
       if (direction == "Right") {
         direction = "Left";
       }
-      if (!(x <= 150 && y <= 350) && !(x<=180 && y >= 595)) {
-        x-= 7;
-      }
-      if (x <= -90) {
-        x = 1390;
-      }
+      x-= 5;
     }
     if (key == 's') { 
-      if (!(y >= 630 && x >= 180) && !(y >= 590 && x >= 1190) && !(y >= 590 && x <= 110)) {
-        y+= 7;
-      } 
+      y+= 5;
     }
     if (key == 'd') { 
       if (direction == "Left") {
         direction = "Right";
       }
-      if (!(x >= 1150 && y <= 350) && !(x >= 1125 && y >= 595)) {
-        x+= 7;
-      }
-      if (x >= 1390) {
-        x = -90;
-      }
+      x+= 5;
     }
   }
 
@@ -505,117 +452,23 @@ class Mage {
 class Attack {
   int x;
   int y;
-  int frames = 0;
+  int frames;
   PVector direction;
   int speed;
-  PVector inital;
-  PImage[] attackImages = new PImage[3];
-  int imageShown = 0;
 
-  Attack (int tempX, int tempY, int tempSpeed ) {
+  Attack (int tempX, int tempY, int tempSpeed) {
     this.x = tempX;
     this.y = tempY;
-    this.inital = new PVector(tempX, tempY);
     this.direction = new PVector(mouseX, mouseY);
     this.speed = tempSpeed;
-
-    this.attackImages[0] = loadImage("MageCharacter/attack/attack1.png");
-    this.attackImages[0].resize(23*2, 15*2);
-    this.attackImages[1] = loadImage("MageCharacter/attack/attack2.png");
-    this.attackImages[1].resize(23*2, 15*2);
-    this.attackImages[2] = loadImage("MageCharacter/attack/attack3.png");
-    this.attackImages[2].resize(23*2, 15*2);
-
-
   }
 
   public void display() {
-    frames += 1;
-    if (frames%6 == 0) { 
-      imageShown += 1;
-      if (imageShown > 2) {
-        imageShown = 0;
-      }
-    }
+    // Show a circle at the x and y position and update the position in the direction vector
+    ellipse(x, y, 10, 10);
+    x += direction.x * speed*0.01f;
+    y += direction.y * speed*0.01f;
 
-    // Fire a projectile from the user's mage at the mouse
-    x -= (this.inital.x - this.direction.x) * 0.05f;
-    y -= (this.inital.y - this.direction.y) * 0.05f;
-      pushMatrix();
-      translate(x, y);
-      // Rotate staff image by the angle from the mouse to the center of the user's mage in radians
-      // Get the angle from the mouse to center of the user's mage  of the screen
-      float angle = atan2(y - (inital.y), x - (inital.x));
-      rotate(angle);
-      image(attackImages[imageShown], 0, 0);
-      popMatrix();
-
-
-  
-  }
-}
-
-class Skeleton {
-  int x;
-  int y;
-  String direction;
-  int bodyImage = 0;
-  int frames = 1;
-
-  PImage[] skeletonWalk = new PImage[4];
-  PImage[] skeletonAttack = new PImage[4];
-
-  Skeleton(int tempX, int tempY, String tempDirection) {
-    this.x = tempX;
-    this.y = tempY;
-    this.direction = tempDirection;
-    skeletonWalk[0] = loadImage("Skeleton/walk/walk1.png");
-    skeletonWalk[1] = loadImage("Skeleton/walk/walk2.png");
-    skeletonWalk[2] = loadImage("Skeleton/walk/walk3.png");
-    skeletonWalk[3] = loadImage("Skeleton/walk/walk4.png");
-
-    for (int i = 0; i < skeletonWalk.length; i++) {
-      skeletonWalk[i].resize(PApplet.parseInt(45*2.5f), PApplet.parseInt(51*2.5f));
-    }
-  }
-
-  public void display() {
-    x += (userMage.x - x) * 0.01f;
-    y += (userMage.y - y) * 0.01f;
-
-    if (x > userMage.x) {
-      direction = "Left";
-    }
-    else {
-      direction = "Right";
-    }
-
-    this.frames = this.frames + 1;
-    if (this.frames % 6 == 0) {
-      if (this.bodyImage == 0) {
-        this.bodyImage = 1;
-      }
-      else if (this.bodyImage == 1) {
-        this.bodyImage = 2;
-      }
-      else if (this.bodyImage == 2) {
-        this.bodyImage = 3;
-      }
-      else if (this.bodyImage == 3) {
-        this.bodyImage = 0;
-      }
-    }
-
-    if (direction == "Right") {
-      image(skeletonWalk[bodyImage], x, y);
-    }
-    else {
-      pushMatrix();
-      translate(x + skeletonWalk[bodyImage].width, y);
-      scale(-1,1); 
-      image(skeletonWalk[bodyImage],0,0);
-      popMatrix();
-    }
     
   }
 }
