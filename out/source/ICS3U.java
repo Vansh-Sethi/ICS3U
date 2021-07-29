@@ -63,7 +63,7 @@ public void setup() {
 
 
 String name = "Type Name on Keyboard";
-int gameState = 3;
+int gameState = 0;
 
 // Draw and move the triangles
 public void draw() {
@@ -109,7 +109,10 @@ public void mousePressed() {
     if (runTime > 20) {
       mageAttack();
     }
+  }
 
+  if (gameState == 3) {
+    handlePlayAgain();
   }
 }
 
@@ -125,6 +128,10 @@ public void mouseMoved() {
 
   if (gameState == 1) {
     mageHover();
+  }
+
+  if (gameState == 3) {
+    handlePlayAgainHover();
   }
 }
 
@@ -377,7 +384,14 @@ public void mageAttack() {
 // =========== Game State 3 ===========
 public void DrawGameOverScreen() {
   clear();
-  cursor(ARROW);
+  lives = 3;
+  attacks.clear();
+  skeletons.clear();
+
+  for (int i = 0; i < 5; i++) {
+    skeletons.add(new Skeleton(PApplet.parseInt(random(0, width)), PApplet.parseInt(random(340, 590)), "Right"));
+  }
+  
   image(gameBackground, 0,0);
 
   fill(0, 0, 0, 150);
@@ -423,6 +437,27 @@ public void DrawGameOverScreen() {
   text("No", 680, 650);
 
 
+}
+
+public void handlePlayAgain() {
+  if ((mouseX > 543 && mouseX < 853) && (mouseY < 574 && mouseY > 496)) {
+    gameState = 1;
+  }
+  else if (mouseX > 546 && mouseX < 852 && mouseY > 595 && mouseY < 677) {
+    exit();
+  }
+}
+
+public void handlePlayAgainHover() {
+  if ((mouseX > 543 && mouseX < 853) && (mouseY < 574 && mouseY > 496)) {
+    cursor(HAND);
+  }
+  else if (mouseX > 546 && mouseX < 852 && mouseY > 595 && mouseY < 677) {
+    cursor(HAND);
+  }
+  else {
+    cursor(ARROW);
+  }
 
 }
 

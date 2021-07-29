@@ -47,7 +47,7 @@ void setup() {
 
 
 String name = "Type Name on Keyboard";
-int gameState = 0;
+int gameState = 3;
 
 // Draw and move the triangles
 void draw() {
@@ -368,14 +368,6 @@ void mageAttack() {
 // =========== Game State 3 ===========
 void DrawGameOverScreen() {
   clear();
-  lives = 3;
-  attacks.clear();
-  skeletons.clear();
-
-  for (int i = 0; i < 5; i++) {
-    skeletons.add(new Skeleton(int(random(0, width)), int(random(340, 590)), "Right"));
-  }
-  
   image(gameBackground, 0,0);
 
   fill(0, 0, 0, 150);
@@ -420,6 +412,15 @@ void DrawGameOverScreen() {
   textSize(35);
   text("No", 680, 650);
 
+  fill(255, 255, 255);
+  textFont(PixelFont);
+  textSize(25);
+  text("X Pos: " + mouseX, 10, 50);
+
+  fill(255, 255, 255);
+  textFont(PixelFont);
+  textSize(25);
+  text("Y Pos: " + mouseY, 10, 100);
 
 }
 
