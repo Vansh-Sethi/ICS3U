@@ -53,9 +53,10 @@ int gameState = 0;
 void draw() {
   clear(); // Clear background such that old triangles are not visible
   background(256, 256, 256); // Re-set the background color
-  if (gameState == 0) {
+  if (gameState == 0 || gameState == 10) {
     DrawStartScreen();
   }
+
   if (gameState == 1) {
     DrawChooseScreen();
   }
@@ -84,6 +85,10 @@ void mousePressed() {
       gameState = 1;
       cursor(ARROW);
     }
+    else if (mouseX > 540 && mouseX < 860 && mouseY > 545 && mouseY < 625) {
+      gameState = 10;
+      cursor(ARROW);
+    }
   }
   if (gameState == 1) { 
     mageSelect();
@@ -98,6 +103,12 @@ void mousePressed() {
   if (gameState == 3) {
     handlePlayAgain();
   }
+
+  if (gameState == 10) {
+    if (mouseX > 545 && mouseX < 863 && mouseY > 593 && mouseY < 677) {
+      gameState = 0;
+    }
+  }
 }
 
 void mouseMoved() {
@@ -105,6 +116,10 @@ void mouseMoved() {
     if (mouseX > 540 && mouseX < 860 && mouseY > 640 && mouseY < 650 + 85) {
       cursor(HAND);
     }
+    else if (mouseX > 540 && mouseX < 860 && mouseY > 545 && mouseY < 625) {
+      cursor(HAND);
+    }
+    
     else{
       cursor(ARROW);
     }
@@ -117,7 +132,18 @@ void mouseMoved() {
   if (gameState == 3) {
     handlePlayAgainHover();
   }
+
+  if (gameState == 10) {
+    if (mouseX > 545 && mouseX < 863 && mouseY > 593 && mouseY < 677) {
+      cursor(HAND);
+    }
+    else {
+      cursor(ARROW);
+    }
+  }
 }
+
+
 
 
 // =========== Game State 0 ===========
@@ -176,6 +202,40 @@ void DrawStartScreen() {
     textFont(PixelFont);
     textSize(35);
     text("Play Game", 610, 700);
+
+  if (gameState == 10) {
+    // Instructions
+    fill(0, 0, 0, 230);
+    rect(50, 30, 1300, 700);
+
+    fill(255, 255, 255);
+    textFont(PixelFont);
+    textSize(75);
+    text("How to Play", 480, 150);
+
+    textSize(40);
+    text("- WASD to move", 380, 250);
+
+    textSize(40);
+    text("- Move Mouse to Aim", 380, 350);
+
+    textSize(40);
+    text("- Click to Shoot", 380, 450);
+
+    textSize(40);
+    text("- +100 Points for Killing One Skeleton", 380, 550);
+
+    
+    fill(255, 255, 255, 0);
+    strokeWeight(10);
+    stroke(255, 255, 255);
+    rect(550, 600, 300, 75, 30, 30, 30, 30);
+
+    fill(255, 255, 255);
+    textFont(PixelFont);
+    textSize(35);
+    text("Let's Play", 622, 650);
+  }
 }
 
 String HandleName(char key, String name) {
