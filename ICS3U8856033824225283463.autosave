@@ -1,19 +1,3 @@
-import processing.core.*; 
-import processing.data.*; 
-import processing.event.*; 
-import processing.opengl.*; 
-
-import java.util.HashMap; 
-import java.util.ArrayList; 
-import java.io.File; 
-import java.io.BufferedReader; 
-import java.io.PrintWriter; 
-import java.io.InputStream; 
-import java.io.OutputStream; 
-import java.io.IOException; 
-
-public class ICS3U extends PApplet {
-
 /* 
 ICS3U - Final Assignment
 Title: Magic Mania
@@ -35,10 +19,9 @@ PImage fullHeart;
 
 int score = 0;
 int runTime = 0;
-int lives = 3;
 
-public void setup() {
-  
+void setup() {
+  size(1400, 768);
   String[] fontList = PFont.list();
   PixelFont = createFont("MinecraftFont.ttf", 32);
   selectionMages[0] = new Mage("Blue", 50, 300, "Right", "Large");
@@ -55,7 +38,7 @@ public void setup() {
 
 
   for (int i = 0; i < 5; i++) {
-    skeletons.add(new Skeleton(PApplet.parseInt(random(0, width)), PApplet.parseInt(random(340, 590)), "Right"));
+    skeletons.add(new Skeleton(int(random(0, width)), int(random(340, 590)), "Right"));
   }
 
 }
@@ -63,10 +46,10 @@ public void setup() {
 
 
 String name = "Type Name on Keyboard";
-int gameState = 3;
+int gameState = 0;
 
 // Draw and move the triangles
-public void draw() {
+void draw() {
   clear(); // Clear background such that old triangles are not visible
   background(256, 256, 256); // Re-set the background color
   if (gameState == 0) {
@@ -78,12 +61,9 @@ public void draw() {
   if (gameState == 2) {
     DrawGameScreen();
   }
-  if (gameState == 3) {
-    DrawGameOverScreen();
-  }
 }
 
-public void keyPressed() {
+void keyPressed() {
   if (gameState == 0) {
     name = HandleName(key, name);
   }
@@ -91,10 +71,9 @@ public void keyPressed() {
     userMage.move(key);
 
   }
-  
 }
 
-public void mousePressed() {
+void mousePressed() {
   if (gameState == 0) {
     if (mouseX > 540 && mouseX < 860 && mouseY > 640 && mouseY < 650 + 85) {
       gameState = 1;
@@ -113,7 +92,7 @@ public void mousePressed() {
   }
 }
 
-public void mouseMoved() {
+void mouseMoved() {
   if (gameState == 0) {
     if (mouseX > 540 && mouseX < 860 && mouseY > 640 && mouseY < 650 + 85) {
       cursor(HAND);
@@ -132,7 +111,7 @@ public void mouseMoved() {
 // =========== Game State 0 ===========
 
 // Game Screen Code (put in seperate file later)
-public void DrawStartScreen() {
+void DrawStartScreen() {
     fill(59, 17, 156);
     noStroke();
     rect(0, 0, 350, 768);
@@ -187,7 +166,7 @@ public void DrawStartScreen() {
     text("Play Game", 610, 700);
 }
 
-public String HandleName(char key, String name) {
+String HandleName(char key, String name) {
 
     if (name == "Type Name on Keyboard") {
       name = "";
@@ -203,7 +182,7 @@ public String HandleName(char key, String name) {
 }
 
 // =========== Game State 1 ===========
-public void DrawChooseScreen() {
+void DrawChooseScreen() {
     clear();
     fill(59, 17, 156);
     noStroke();
@@ -232,7 +211,7 @@ public void DrawChooseScreen() {
 
 }
 
-public void mageHover() {
+void mageHover() {
     if (mouseX > 50 && mouseX < 238+50 && mouseY > 300 && mouseY < 300+264) {
       cursor(HAND);
     }
@@ -250,7 +229,7 @@ public void mageHover() {
     }
 }
 
-public void mageSelect() {
+void mageSelect() {
     if (mouseX > 50 && mouseX < 238+50 && mouseY > 300 && mouseY < 300+264) {
       userMage = new Mage("Blue", 700, 350, "Right", "Small");
       gameState = 2;
@@ -277,13 +256,13 @@ public void mageSelect() {
 }
 
 // =========== Game State 2 ===========
-public void DrawGameScreen() {
+void DrawGameScreen() {
     clear();
     image(gameBackground, 0,0);
     runTime += 1;
 
   
-    HashMap<Integer, String> deleteAttack = new HashMap<Integer, String>();
+
     IntList toRemoveSkeles =  new IntList();
     IntList toRemoveAttacks =  new IntList();
 
@@ -294,7 +273,6 @@ public void DrawGameScreen() {
         Skeleton enemy = skeletons.get(j);
         if ((circle.x < enemy.skeletonWalk[0].width+enemy.x && circle.x > enemy.skeletonWalk[0].width-enemy.x) && (circle.y < enemy.skeletonWalk[0].height+enemy.y && circle.y > enemy.skeletonWalk[0].height-enemy.y)) {
           toRemoveAttacks.append(i);
-          deleteAttack.put(i, "Destroy");
           enemy.health -= 3;
           if (enemy.health <= 0) {
             toRemoveSkeles.append(j);
@@ -304,19 +282,16 @@ public void DrawGameScreen() {
       }
       if (circle.x < 0 || circle.x > width || circle.y < 0 || circle.y > height) { 
         toRemoveAttacks.append(i);
-         deleteAttack.put(i, "Destroy");
       }
     }
-    toRemoveSkeles.sort();
+
     for (int i = toRemoveSkeles.size() - 1; i >= 0; i--) {
+      print(toRemoveSkeles.get(i));
+      // print(i);
       skeletons.remove(toRemoveSkeles.get(i));
     }
-    printArray(toRemoveAttacks);
     for (int i = toRemoveAttacks.size() - 1; i >= 0; i--) {
-      if (deleteAttack.get(toRemoveAttacks.get(i)) == "Destroy") {
-        attacks.remove(toRemoveAttacks.get(i));
-        deleteAttack.put(toRemoveAttacks.get(i), "nope");
-      }
+      //attacks.remove(toRemoveAttacks.get(i));
     }
 
     toRemoveAttacks.clear();
@@ -333,97 +308,22 @@ public void DrawGameScreen() {
     text("Wizard: " + name, 25, 50);
 
     text("Score: " + score, 25, 740);
+
+    image(fullHeart, 1300 ,25);
+    image(fullHeart, 1225 ,25);
+    image(fullHeart, 1150,25);
+
     userMage.display();
+    // if (runTime % 5000000 == 0) {
+    //   skeletons.add(new Skeleton(int(random(0, width)), int(random(0, height)), "Right"));
+    // }
 
-    if (lives == 3) {
-      image(fullHeart, 1300 ,25);
-      image(fullHeart, 1225 ,25);
-      image(fullHeart, 1150,25);
-    }
-    if (lives == 2) {
-      image(emptyHeart, 1300 ,25);
-      image(fullHeart, 1225 ,25);
-      image(fullHeart, 1150,25);
-    }
-    if (lives == 1) {
-      image(emptyHeart, 1300 ,25);
-      image(emptyHeart, 1225 ,25);
-      image(fullHeart, 1150,25);
-    }
-    if (lives < 1) {
-      image(emptyHeart, 1300 ,25);
-      image(emptyHeart, 1225 ,25);
-      image(emptyHeart, 1150,25);
-    }
-    if (lives <= 0) {
-      gameState = 3;
-    }
-
-    
-    
-
-
-    if (runTime % 100 == 0) {
-      skeletons.add(new Skeleton(PApplet.parseInt(random(0, width)), PApplet.parseInt(random(340, 590)), "Right"));
-    }
 
 }
 
-public void mageAttack() {
+void mageAttack() {
   attacks.add(new Attack(userMage.x + userMage.frame1.width/2, userMage.y + userMage.frame1.height/2, 1));
   userMage.staffAttack = true;
-}
-
-// =========== Game State 3 ===========
-public void DrawGameOverScreen() {
-  clear();
-  cursor(ARROW);
-  image(gameBackground, 0,0);
-
-  fill(0, 0, 0, 150);
-  rect(0, 0, width, height);
-
-  fill(255, 255, 255);
-  textFont(PixelFont);
-  textSize(75);
-  text("Game Over!", 485, 200);
-
-  fill(255, 255, 255);
-  textFont(PixelFont);
-  textSize(75);
-  text("Your Final Score: " + score, 350, 300);
-
-  fill(255, 255, 255);
-  textFont(PixelFont);
-  textSize(50);
-  text("Want to Play Again?", 460, 450);
-
-  fill(255, 255, 255);
-  textFont(PixelFont);
-  textSize(30);
-  text("Great Job Wizard, " + name, 20, 750);
-
-  fill(255, 255, 255, 0);
-  strokeWeight(10);
-  stroke(255, 255, 255);
-  rect(550, 500, 300, 75, 30, 30, 30, 30);
-
-  fill(255, 255, 255);
-  textFont(PixelFont);
-  textSize(35);
-  text("Yes", 665, 550);
-
-  fill(0,0,0);
-  strokeWeight(10);
-  rect(550, 600, 300, 75, 30, 30, 30, 30);
-
-  fill(255, 255, 255);
-  textFont(PixelFont);
-  textSize(35);
-  text("No", 680, 650);
-
-
-
 }
 
 // Classes Characters
@@ -494,7 +394,7 @@ class Mage {
 
   }
 
-  public void display() {
+  void display() {
     this.frames = this.frames + 1;
     if (this.frames % 6 == 0) {
       if (this.bodyImage == 1) {
@@ -586,7 +486,7 @@ class Mage {
 
   }
 
-  public void move(char key) {
+  void move(char key) {
 
     if (key == 'w') { 
       if (!(x >= 135 && y <= 340) && !(x <= 135 && y <= 365) && !(x >= 1165 && y <= 365))  {
@@ -652,7 +552,7 @@ class Attack {
 
   }
 
-  public void display() {
+  void display() {
     frames += 1;
     if (frames%6 == 0) { 
       imageShown += 1;
@@ -662,8 +562,8 @@ class Attack {
     }
 
     // Fire a projectile from the user's mage at the mouse
-    x -= (this.inital.x - this.direction.x) * 0.05f;
-    y -= (this.inital.y - this.direction.y) * 0.05f;
+    x -= (this.inital.x - this.direction.x) * 0.05;
+    y -= (this.inital.y - this.direction.y) * 0.05;
       pushMatrix();
       translate(x, y);
       // Rotate staff image by the angle from the mouse to the center of the user's mage in radians
@@ -685,9 +585,6 @@ class Skeleton {
   int bodyImage = 0;
   int frames = 1;
   int health = 9;
-  boolean attackMode = false;
-  int attackImage = 0;
-
 
   PImage[] skeletonWalk = new PImage[4];
   PImage[] skeletonAttack = new PImage[4];
@@ -701,113 +598,50 @@ class Skeleton {
     skeletonWalk[2] = loadImage("Skeleton/walk/walk3.png");
     skeletonWalk[3] = loadImage("Skeleton/walk/walk4.png");
 
-    skeletonAttack[0] = loadImage("Skeleton/fight/fight1.png");
-    skeletonAttack[1] = loadImage("Skeleton/fight/fight2.png");
-    skeletonAttack[2] = loadImage("Skeleton/fight/fight3.png");
-    skeletonAttack[3] = loadImage("Skeleton/fight/fight4.png");
-
-
     for (int i = 0; i < skeletonWalk.length; i++) {
-      skeletonWalk[i].resize(PApplet.parseInt(45*2.5f), PApplet.parseInt(51*2.5f));
-    }
-    for (int i = 0; i < skeletonAttack.length; i++) {
-      skeletonAttack[i].resize(PApplet.parseInt(45*2.5f), PApplet.parseInt(51*2.5f));
+      skeletonWalk[i].resize(int(45*2.5), int(51*2.5));
     }
   }
 
-  public void display() {
-    if (dist(userMage.x, userMage.y, x, y) < 100 && attackMode == false) { 
-      this.attackMode = true;
-    }
-    
-    if (dist(userMage.x, userMage.y, x, y) > 100 && attackMode == true) { 
-      this.attackMode = false;
-    }
-    
+  void display() {
 
 
-    if (!this.attackMode) {
+    x += (userMage.x - x) * 0.01;
+    y += (userMage.y - y) * 0.01;
 
-      x += (userMage.x - x) * 0.01f;
-      y += (userMage.y - y) * 0.01f;
-
-      if (x > userMage.x) {
-        direction = "Left";
-      }
-      else {
-        direction = "Right";
-      }
-
-      this.frames = this.frames + 1;
-      if (this.frames % 6 == 0) {
-        if (this.bodyImage == 0) {
-          this.bodyImage = 1;
-        }
-        else if (this.bodyImage == 1) {
-          this.bodyImage = 2;
-        }
-        else if (this.bodyImage == 2) {
-          this.bodyImage = 3;
-        }
-        else if (this.bodyImage == 3) {
-          this.bodyImage = 1;
-        }
-      }
-
-      if (direction == "Right") {
-        image(skeletonWalk[bodyImage], x, y);
-      }
-      else {
-        pushMatrix();
-        translate(x + skeletonWalk[bodyImage].width, y);
-        scale(-1,1); 
-        image(skeletonWalk[bodyImage],0,0);
-        popMatrix();
-      }
+    if (x > userMage.x) {
+      direction = "Left";
     }
     else {
-      if (x > userMage.x) {
-        direction = "Left";
-      }
-      else {
-        direction = "Right";
-      }
-
-      this.frames = this.frames + 1;
-      if (this.frames % 12 == 0) {
-        if (this.attackImage == 0) {
-          this.attackImage = 1;
-        }
-        else if (this.attackImage == 1) {
-          this.attackImage = 2;
-        }
-        else if (this.bodyImage == 2) {
-          this.attackImage = 3;
-          if(dist(userMage.x, userMage.y, x, y) < 100) {
-            lives -= 1;
-          }
-        }
-        else if (this.bodyImage == 3) {
-          // this.attackMode = false;
-
-          this.attackImage = 0;
-        }
-      }
-
-      if (direction == "Right") {
-        image(skeletonWalk[attackImage], x, y);
-      }
-      else {
-        pushMatrix();
-        translate(x + skeletonAttack[attackImage].width, y);
-        scale(-1,1); 
-        image(skeletonAttack[attackImage],0,0);
-        popMatrix();
-      }
-      
+      direction = "Right";
     }
 
-    
+    this.frames = this.frames + 1;
+    if (this.frames % 6 == 0) {
+      if (this.bodyImage == 0) {
+        this.bodyImage = 1;
+      }
+      else if (this.bodyImage == 1) {
+        this.bodyImage = 2;
+      }
+      else if (this.bodyImage == 2) {
+        this.bodyImage = 3;
+      }
+      else if (this.bodyImage == 3) {
+        this.bodyImage = 0;
+      }
+    }
+
+    if (direction == "Right") {
+      image(skeletonWalk[bodyImage], x, y);
+    }
+    else {
+      pushMatrix();
+      translate(x + skeletonWalk[bodyImage].width, y);
+      scale(-1,1); 
+      image(skeletonWalk[bodyImage],0,0);
+      popMatrix();
+    }
     
     if (health == 10) {
       fill(77, 255, 0);
@@ -824,15 +658,5 @@ class Skeleton {
       rect(x, y-15, 25, 10);
     }
     
-  }
-}
-  public void settings() {  size(1400, 768); }
-  static public void main(String[] passedArgs) {
-    String[] appletArgs = new String[] { "ICS3U" };
-    if (passedArgs != null) {
-      PApplet.main(concat(appletArgs, passedArgs));
-    } else {
-      PApplet.main(appletArgs);
-    }
   }
 }
